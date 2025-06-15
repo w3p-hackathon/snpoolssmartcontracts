@@ -11,6 +11,7 @@ contract SimpleAirdropScheme is ERC20 {
         bytes32 root;
     }
     mapping(uint256 => Reward) rewards;
+    uint256 rewardsIds;
     mapping(bytes32 => bool) nullifiers;
 
     constructor() ERC20("SNPool", "SNP") {}
@@ -38,8 +39,15 @@ contract SimpleAirdropScheme is ERC20 {
         _mint(recipient, amt);
     }
 
-    function stake(uint256 amtPer, uint256 genomeAmt) external {
-        //approve before hand
-        transferFrom(msg.sender, address(this), amtPer * genomeAmt);
+    function createReward(uint256 value, bytes32 root) public {
+        uint256 currentId = rewardsIds;
+        Reward memory reward = Reward({value: value, root: root});
+        rewards[currentId] = reward;
+        rewardsIds++;
+    }
+
+    function stake(uint256 amount) external {
+        //approve beforehand
+        transferFrom(msg.sender, address(this), amount);
     }
 }
