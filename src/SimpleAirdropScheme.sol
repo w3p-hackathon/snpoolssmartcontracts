@@ -39,6 +39,10 @@ contract SimpleAirdropScheme is ERC20 {
         _mint(recipient, amt);
     }
 
+    function readReward(uint256 id) public view returns (Reward memory reward) {
+        return rewards[id];
+    }
+
     function createReward(uint256 value, bytes32 root) public {
         uint256 currentId = rewardsIds;
         Reward memory reward = Reward({value: value, root: root});
